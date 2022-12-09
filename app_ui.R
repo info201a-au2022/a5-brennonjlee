@@ -47,6 +47,12 @@ intro_panel <- tabPanel(
   titlePanel("Introduction"),
   mainPanel(
     h3("Co2"),
+    tags$img(
+      src = "co2.png",
+      alt = "image of co2 coming out of a factory",
+      width = 350,
+      height = 250
+    ),
     p("One of the main drivers for climate change is co2 emissions. Co2 traps heat in the Earth, causing temperatures 
       to rise which could lead to polar ice loss, ocean warming, sea level rise, and other catastrophic events. As a 
       result of the risk of these global events, I decided to dive deeper into the co2 emissions data that is provided
