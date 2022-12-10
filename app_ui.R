@@ -10,23 +10,30 @@ library(rsconnect)
 library(markdown)
 library(maps)
 
+# reading the data
 data <- read.csv("https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv")
 
 # introduction values
+
+# create data frame with values from country, year, and co2, and turning the na values to 0
 co2_data <- data %>%
   select('country', 'year', 'co2') %>%
   mutate_all(~replace(., is.na(.), 0))
 
+# create data frame with only 2021 data from the above dataframe
 co2_data_2021 <- co2_data %>%
   filter(year == 2021)
 
+#calculate the average co2 in the year 2021
 avg_co2_2021 = sum(co2_data_2021$co2)/nrow(co2_data_2021)
 
+# calculate the max co2 and the country its from
 max_co2_2021 = max(co2_data_2021$co2)
 max_co2_2021_country <- co2_data_2021 %>%
   filter(co2 == max(co2)) %>%
   pull(country)
 
+# calculate the min co2 and the country its from
 min_co2_2021 <- co2_data_2021 %>%
   filter(co2 != 0) %>%
   filter(co2 == min(co2)) %>%
@@ -36,12 +43,14 @@ min_co2_2021_country <- co2_data_2021 %>%
   filter(co2 == min(co2)) %>%
   pull(country)
 
+# calculate the co2 from the year 2021
 co2_2011 <- co2_data %>%
   filter(year == 2011) %>%
   filter(country == "World") %>%
   pull(co2)
 co2_change_10_yr = max_co2_2021 - co2_2011
 
+# create the introduction tab
 intro_panel <- tabPanel(
   "Introduction",
   titlePanel("Introduction"),
@@ -73,6 +82,7 @@ intro_panel <- tabPanel(
   )
 )
 
+# create the input values for the dropdown menu
 chart_var_input <- selectInput(
   inputId = "inp_var",
   label = "Select a variable",
@@ -83,6 +93,7 @@ chart_var_input <- selectInput(
   selected = "co2"
 )
 
+# create the input values for the country dropdown menu
 chart_country_input <- selectInput(
   inputId = "inp",
   label = "Select a country",
@@ -90,6 +101,7 @@ chart_country_input <- selectInput(
   selected = "World"
 )
 
+# create the interactive visual tab
 chart_panel <- tabPanel(
   "Interactive Visuals",
   titlePanel("Interactive Visuals From the Data"),
@@ -113,6 +125,7 @@ chart_panel <- tabPanel(
   )
 )
 
+# the navigation tab page
 ui <- navbarPage(
   "Co2 Emissions",
   intro_panel,
